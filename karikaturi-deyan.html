@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карикатури от Деян — Твоята история, оживена</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Mulish:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dark: #8a6f2e;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --gray: #888;
+    --bg-main: #0a0a0a;
+    --bg-section: #080808;
+    --bg-alt: #060606;
+    --bg-card: #0a0a0a;
+    --bg-card-featured: linear-gradient(135deg, #0f0f0f 0%, #111008 100%);
+    --bg-process-visual: #0e0e0e;
+    --bg-footer: #050505;
+    --bg-input: rgba(255,255,255,0.03);
+    --text-main: #f5f0e8;
+    --text-heading: #ffffff;
+    --border-gold: rgba(201,168,76,0.15);
+    --border-gold-med: rgba(201,168,76,0.12);
+    --border-gold-strong: rgba(201,168,76,0.5);
+    --nav-bg: rgba(10,10,10,0.92);
+    --grid-line: rgba(201,168,76,0.04);
+    --radial: rgba(201,168,76,0.08);
+    --overlay: rgba(10,10,10,0.8);
+    --gallery-bg: #111;
+  }
+
+  [data-theme="light"] {
+    --black: #f5f0e8;
+    --gold: #9a6f1e;
+    --gold-light: #b8922a;
+    --gold-dark: #6b4c10;
+    --cream: #2a1e08;
+    --white: #1a1208;
+    --gray: #666;
+    --bg-main: #f5f0e8;
+    --bg-section: #ede8df;
+    --bg-alt: #e8e2d8;
+    --bg-card: #f0ebe0;
+    --bg-card-featured: linear-gradient(135deg, #efe8d5 0%, #e8dfc8 100%);
+    --bg-process-visual: #ede6d8;
+    --bg-footer: #ddd6c8;
+    --bg-input: rgba(255,255,255,0.8);
+    --text-main: #2a1e08;
+    --text-heading: #1a1208;
+    --border-gold: rgba(154,111,30,0.2);
+    --border-gold-med: rgba(154,111,30,0.15);
+    --border-gold-strong: rgba(154,111,30,0.6);
+    --nav-bg: rgba(245,240,232,0.95);
+    --grid-line: rgba(154,111,30,0.06);
+    --radial: rgba(154,111,30,0.06);
+    --overlay: rgba(30,20,5,0.75);
+    --gallery-bg: #d8d0c4;
+  }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border-gold);
+    color: var(--gold);
+    width: 2.2rem;
+    height: 2.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.25s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover {
+    background: var(--gold);
+    color: var(--bg-main);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-gold);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.6rem 1.5rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--black); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, var(--radial) 0%, transparent 70%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 0.4rem 1.2rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05;
+    color: var(--text-heading);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    opacity: 0.65;
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    padding: 0.9rem 2.2rem;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--cream);
+    padding: 0.9rem 2.2rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid rgba(245,240,232,0.3);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s;
+    display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 4rem;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--gold);
+  }
+  .stat-label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5; margin-top: 0.3rem; }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 4rem; }
+  .section-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-sub { opacity: 0.55; line-height: 1.7; max-width: 500px; }
+
+  /* ── GALLERY ── */
+  #gallery { background: var(--bg-section); }
+  .gallery-header { text-align: center; margin-bottom: 3.5rem; }
+  .gallery-header .section-sub { margin: 0 auto; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    cursor: pointer;
+    background: var(--gallery-bg);
+  }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.3s;
+    filter: brightness(0.92);
+  }
+  .gallery-item:hover img { transform: scale(1.06); filter: brightness(1); }
+  .gallery-item-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, var(--overlay) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 1.2rem;
+  }
+  .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+  .gallery-item-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+
+  /* ── HOW IT WORKS ── */
+  #process {
+    background: var(--black);
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .process-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .process-steps { display: flex; flex-direction: column; gap: 2rem; margin-top: 2.5rem; }
+  .process-step { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: rgba(201,168,76,0.2);
+    line-height: 1;
+    min-width: 3rem;
+    transition: color 0.3s;
+  }
+  .process-step:hover .step-num { color: var(--gold); }
+  .step-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+    color: var(--text-main);
+  }
+  .step-content p { font-size: 0.9rem; opacity: 0.55; line-height: 1.65; }
+
+  .process-visual {
+    position: relative;
+    background: var(--bg-process-visual);
+    border: 1px solid var(--border-gold-med);
+    padding: 2rem;
+    text-align: center;
+  }
+  .process-visual img {
+    width: 100%;
+    max-width: 340px;
+    filter: brightness(0.95);
+  }
+  .process-badge {
+    position: absolute; top: -1px; right: 2rem;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.35rem 0.9rem;
+  }
+
+  /* ── PRICING ── */
+  #pricing {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border-gold);
+  }
+  .pricing-header { text-align: center; margin-bottom: 3.5rem; }
+  .pricing-header .section-sub { margin: 0 auto; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .pricing-card {
+    border: 1px solid var(--border-gold);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+    background: var(--bg-card);
+  }
+  .pricing-card:hover { border-color: var(--border-gold-strong); transform: translateY(-4px); }
+  .pricing-card.featured {
+    border-color: var(--gold);
+    background: var(--bg-card-featured);
+  }
+  .featured-badge {
+    position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--black);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.3rem 1rem;
+    white-space: nowrap;
+  }
+  .pricing-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .pricing-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .pricing-desc { font-size: 0.85rem; opacity: 0.5; margin-bottom: 1.5rem; line-height: 1.5; }
+  .pricing-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .pricing-price span { font-size: 1rem; opacity: 0.6; }
+  .pricing-note { font-size: 0.75rem; opacity: 0.4; margin-bottom: 2rem; }
+  .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
+  .pricing-features li { font-size: 0.85rem; opacity: 0.7; display: flex; gap: 0.7rem; align-items: flex-start; }
+  .pricing-features li::before { content: '✦'; color: var(--gold); font-size: 0.6rem; margin-top: 0.2rem; flex-shrink: 0; }
+  .pricing-btn {
+    display: block; width: 100%; text-align: center;
+    padding: 0.85rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s;
+  }
+  .pricing-btn-outline {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+  }
+  .pricing-btn-outline:hover { background: rgba(201,168,76,0.1); }
+  .pricing-btn-filled { background: var(--gold); color: var(--black); font-weight: 600; }
+  .pricing-btn-filled:hover { background: var(--gold-light); }
+
+  .pricing-rules {
+    max-width: 650px;
+    margin: 3rem auto 0;
+    background: rgba(201,168,76,0.04);
+    border: 1px solid var(--border-gold-med);
+    padding: 1.5rem 2rem;
+  }
+  .pricing-rules h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .pricing-rules ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .pricing-rules li { font-size: 0.82rem; opacity: 0.55; padding-left: 1rem; position: relative; }
+  .pricing-rules li::before { content: '—'; position: absolute; left: 0; color: var(--gold-dark); }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--black);
+    border-top: 1px solid var(--border-gold);
+  background: var(--bg-section);
+  }
+  .contact-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-info { padding-top: 0.5rem; }
+  .contact-info p { opacity: 0.55; line-height: 1.7; margin-bottom: 2rem; font-size: 0.95rem; }
+  .contact-detail { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+  .contact-detail-item { display: flex; gap: 1rem; align-items: center; }
+  .contact-detail-item span:first-child { color: var(--gold); font-size: 1rem; }
+  .contact-detail-item a { color: var(--cream); text-decoration: none; opacity: 0.7; font-size: 0.9rem; }
+  .contact-detail-item a:hover { color: var(--gold); opacity: 1; }
+  .social-links { display: flex; gap: 1rem; }
+  .social-link {
+    width: 2.5rem; height: 2.5rem;
+    border: 1px solid var(--border-gold);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); text-decoration: none; font-size: 1rem;
+    transition: all 0.25s;
+  }
+  .social-link:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.5; }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--bg-input);
+    border: 1px solid var(--border-gold);
+    color: var(--text-main);
+    padding: 0.85rem 1rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.25s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--border-gold-strong); }
+  .form-group select option { background: var(--bg-card); color: var(--text-main); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 1rem;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s;
+    margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: var(--gold-light); }
+  .form-note { font-size: 0.75rem; opacity: 0.4; line-height: 1.5; }
+
+  .revolut-box {
+    margin-top: 1.5rem;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 1.2rem 1.5rem;
+    display: flex; gap: 1rem; align-items: center;
+  }
+  .revolut-box span { font-size: 1.5rem; }
+  .revolut-box div { font-size: 0.82rem; opacity: 0.6; line-height: 1.5; }
+  .revolut-box strong { color: var(--gold); opacity: 1; font-size: 0.85rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg-footer);
+    border-top: 1px solid var(--border-gold);
+    padding: 2.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+  }
+  .footer-copy { font-size: 0.75rem; opacity: 0.3; }
+  .footer-ig a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .footer-ig a:hover { opacity: 1; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.95);
+    align-items: center; justify-content: center;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+  .lightbox-close {
+    position: absolute; top: 2rem; right: 2rem;
+    color: var(--gold); font-size: 2rem; cursor: pointer;
+    background: none; border: none; line-height: 1;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .process-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-item.tall { grid-row: span 1; aspect-ratio: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo-svg" style="display:flex;align-items:center;text-decoration:none;">
+    <svg width="140" height="66" viewBox="0 0 200 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e8c97a"/>
+          <stop offset="50%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#8a6f2e"/>
+        </linearGradient>
+      </defs>
+      <line x1="100" y1="2" x2="112" y2="46" stroke="url(#gld)" stroke-width="1.4"/>
+      <line x1="100" y1="2" x2="88" y2="46" stroke="url(#gld)" stroke-width="1.4"/>
+      <line x1="88" y1="46" x2="55" y2="52" stroke="url(#gld)" stroke-width="1.2"/>
+      <line x1="112" y1="46" x2="145" y2="52" stroke="url(#gld)" stroke-width="1.2"/>
+      <polygon points="100,34 107,46 100,54 93,46" stroke="url(#gld)" stroke-width="1.3" fill="none"/>
+      <line x1="100" y1="54" x2="100" y2="62" stroke="url(#gld)" stroke-width="1.2"/>
+      <text x="100" y="84" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="16" letter-spacing="8" fill="url(#gld)" font-weight="700">ARIE</text>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Галерия</a></li>
+    <li><a href="#process">Как работи</a></li>
+    <li><a href="#pricing">Цени</a></li>
+    <li><a href="#contact">Поръчай</a></li>
+  </ul>
+  <div style="display:flex;gap:0.8rem;align-items:center;">
+    <button class="theme-toggle" id="themeToggle" title="Смени темата">🌙</button>
+    <a href="#contact" class="nav-cta">Поръчай сега</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-tag">✦ Дигитални карикатури с AI ✦</div>
+    <h1 class="hero-title">Твоята история,<br><em>оживена</em></h1>
+    <p class="hero-sub">Превръщам твои снимки в уникални карикатури — перфектен подарък, спомен или просто нещо различно.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Поръчай карикатура</a>
+      <a href="#gallery" class="btn-secondary">Виж примери ↓</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Доволни клиенти</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">48ч</div>
+        <div class="stat-label">Срок за доставка</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Дигитален файл</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header">
+    <span class="section-tag">Портфолио</span>
+    <h2 class="section-title">Последни <em>творби</em></h2>
+    <p class="section-sub">Всяка карикатура е уникална — различен стил, настроение и история.</p>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/basketball.jpg" alt="Баскетбол" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Спортна сцена</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/portrait_man.jpg" alt="Мъжки портрет" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Мъжки портрет</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/couple_travel.png" alt="Двойка на пътешествие" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Двойка & Пътешествие</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/basketball2.jpg" alt="Баскетбол 2" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Татко & Син</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/friends.jpg" alt="Приятели" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Приятели</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/running.jpg" alt="Бягане" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Спортна сцена</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/baby.jpg" alt="Бебе" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Малкият шеф</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/couple2.png" alt="Двойка 2" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Двойка портрет</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/friends2.jpg" alt="Приятели 2" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Двойка</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/hats.jpg" alt="Шапки" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Комична сцена</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="gallery/couple3.jpg" alt="Двойка 3" loading="lazy">
+      <div class="gallery-item-overlay"><span class="gallery-item-label">Двойка</span></div>
+    </div>
+  </div>
+
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <div>
+      <span class="section-tag">Процесът</span>
+      <h2 class="section-title">Как <em>работи?</em></h2>
+      <p class="section-sub">Три прости стъпки — от снимка до готова карикатура.</p>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h3>Изпрати снимка</h3>
+            <p>Попълни формата с 1-3 ясни снимки на хората които искаш нарисувани. Може от всякакъв ъгъл.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h3>Потвърди поръчката</h3>
+            <p>Свързвам се с теб в рамките на 24 часа за потвърждение и изпращане на линк за плащане.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h3>Получи карикатурата</h3>
+            <p>В рамките на 48 часа получаваш висококачествен дигитален файл — готов за печат или споделяне.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="process-visual">
+      <div class="process-badge">Пример</div>
+      <img src="https://deyan2505.github.io/mediakit-website/images/gallery2.jpg" alt="Пример карикатура">
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-header">
+    <span class="section-tag">Цени</span>
+    <h2 class="section-title">Прости и <em>честни</em> цени</h2>
+    <p class="section-sub">Без скрити такси. Плащането се договаря след потвърждение на поръчката.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-icon">👤</div>
+      <div class="pricing-name">Стандартна</div>
+      <div class="pricing-desc">Едно или повече хора на снимката</div>
+      <div class="pricing-price">25€ <span></span></div>
+      <div class="pricing-note">дигитален файл</div>
+      <ul class="pricing-features">
+        <li>1-3 човека на снимката</li>
+        <li>Висококачествен дигитален файл</li>
+        <li>Готов до 48 часа</li>
+        <li>1 корекция включена</li>
+        <li>Подходящ за принт</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-outline">Поръчай</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="featured-badge">Най-популярна</div>
+      <div class="pricing-icon">👨‍👩‍👧‍👦</div>
+      <div class="pricing-name">Групова</div>
+      <div class="pricing-desc">За 4 и повече хора или сложна сцена</div>
+      <div class="pricing-price">40€ <span></span></div>
+      <div class="pricing-note">дигитален файл</div>
+      <ul class="pricing-features">
+        <li>4+ човека или сложна сцена</li>
+        <li>Висококачествен дигитален файл</li>
+        <li>Готов до 48 часа</li>
+        <li>2 корекции включени</li>
+        <li>Подходящ за принт и рамкиране</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-filled">Поръчай сега</a>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-icon">⚡</div>
+      <div class="pricing-name">Спешна</div>
+      <div class="pricing-desc">Нужна ти е за утре? Не е проблем.</div>
+      <div class="pricing-price">+15€ <span></span></div>
+      <div class="pricing-note">добавка към всеки пакет</div>
+      <ul class="pricing-features">
+        <li>Доставка до 24 часа</li>
+        <li>Приоритетна обработка</li>
+        <li>Всички включени услуги от пакета</li>
+        <li>Перфектно за рожден ден</li>
+      </ul>
+      <a href="#contact" class="pricing-btn pricing-btn-outline">Поръчай</a>
+    </div>
+  </div>
+  <div class="pricing-rules">
+    <h4>Важно преди поръчка</h4>
+    <ul>
+      <li>Изпращаш снимка и получаваш карикатура в моя стил — не правя промени по стил или поза</li>
+      <li>Само технически корекции (яснота, цвят) са включени в пакета</li>
+      <li>Допълнителни корекции извън пакета се договарят допълнително</li>
+      <li>Плащането се договаря след потвърждение на поръчката</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <span class="section-tag">Контакт</span>
+      <h2 class="section-title">Готов за <em>твоята</em><br>карикатура?</h2>
+      <p>Качи снимката, избери пакет и опиши какво искаш. Готовата карикатура получаваш до 48 часа.</p>
+    </div>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label>Твоето име</label>
+        <input type="text" placeholder="Иван Иванов" required>
+      </div>
+      <div class="form-group">
+        <label>Имейл или телефон</label>
+        <input type="text" placeholder="ivan@email.com или 0888..." required>
+      </div>
+      <div class="form-group">
+        <label>Пакет</label>
+        <select required>
+          <option value="">— Избери пакет —</option>
+          <option value="standard">Стандартна — 25€ (1-3 човека)</option>
+          <option value="group">Групова — 40€ (4+ човека)</option>
+          <option value="urgent-standard">Спешна стандартна — 40€</option>
+          <option value="urgent-group">Спешна групова — 55€</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Качи снимката</label>
+        <input type="file" accept="image/*" required style="padding:0.6rem 1rem; cursor:pointer; width:100%;">
+      </div>
+      <div class="form-group">
+        <label>Описание / повод</label>
+        <textarea placeholder="Кажи ми за кого е карикатурата, дали е подарък, има ли специален повод, какво настроение искаш..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Изпрати поръчка ✦</button>
+      <div id="form-success" style="display:none; text-align:center; color:var(--gold); font-size:0.9rem; padding:1rem; border:1px solid rgba(201,168,76,0.3);">
+        ✦ Получих поръчката! Ще се свържа с теб до 24 часа.
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <svg width="90" height="45" viewBox="0 0 200 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gld2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#e8c97a"/>
+        <stop offset="50%" stop-color="#c9a84c"/>
+        <stop offset="100%" stop-color="#8a6f2e"/>
+      </linearGradient>
+    </defs>
+    <line x1="100" y1="2" x2="112" y2="46" stroke="url(#gld2)" stroke-width="1.4"/>
+    <line x1="100" y1="2" x2="88" y2="46" stroke="url(#gld2)" stroke-width="1.4"/>
+    <line x1="88" y1="46" x2="55" y2="52" stroke="url(#gld2)" stroke-width="1.2"/>
+    <line x1="112" y1="46" x2="145" y2="52" stroke="url(#gld2)" stroke-width="1.2"/>
+    <polygon points="100,34 107,46 100,54 93,46" stroke="url(#gld2)" stroke-width="1.3" fill="none"/>
+    <line x1="100" y1="54" x2="100" y2="62" stroke="url(#gld2)" stroke-width="1.2"/>
+    <text x="100" y="84" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="16" letter-spacing="8" fill="url(#gld2)" font-weight="700">ARIE</text>
+  </svg>
+  <div style="font-family:'Playfair Display',serif;color:var(--gold);font-size:0.95rem;letter-spacing:0.25em;">ДЕЯН АРИЕ</div>
+  <div class="footer-copy" style="margin-top:0.4rem;">© 2026 · Дигитални карикатури · Тел Авив</div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  function openLightbox(el) {
+    const img = el.querySelector('img');
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('form-success').style.display = 'block';
+    e.target.reset();
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.process-step, .pricing-card, .gallery-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Theme toggle
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('theme') || 'dark';
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    toggle.textContent = '☀️';
+  }
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    if (current === 'light') {
+      document.documentElement.removeAttribute('data-theme');
+      toggle.textContent = '🌙';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      toggle.textContent = '☀️';
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
+</body>
+</html>
